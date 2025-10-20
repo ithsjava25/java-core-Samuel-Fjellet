@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Perishable extends Product{
+    public Perishable(UUID uuid, String name, Category category, BigDecimal price) {
+        super(uuid, name, category, price);
+    }
+
     public LocalDate expirationDate() {
         return LocalDate.now();
     }

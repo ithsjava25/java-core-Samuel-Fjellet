@@ -11,6 +11,13 @@ public abstract class Product implements Perishables {
     Category category;
     BigDecimal price;
 
+    public Product(UUID uuid, String name, Category category, BigDecimal price) {
+        this.uuid = uuid;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
+
 
     public BigDecimal price() {
         return price;

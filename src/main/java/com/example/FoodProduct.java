@@ -9,6 +9,7 @@ public class FoodProduct extends Product implements Perishables, Shippable {
     public BigDecimal weight;
 
     public FoodProduct(UUID id, String name, Category category, BigDecimal price, LocalDate expirationDate, BigDecimal weight) {
+        super(id, name, category, price);
 
     }
 
