@@ -10,40 +10,36 @@ public class FoodProduct extends Product implements Perishables, Shippable {
 
     public FoodProduct(UUID id, String name, Category category, BigDecimal price, LocalDate expirationDate, BigDecimal weight) {
         super(id, name, category, price);
+        this.expirationDate = expirationDate;
+        if (weight.compareTo(BigDecimal.ZERO) < 0)
+            throw new IllegalArgumentException("Weight cannot be negative.");
+        this.weight = weight;
 
     }
 
 
     @Override
     public BigDecimal getPrice() {
-        return null;
+        return price;
     }
 
     @Override
     public UUID uuid() {
-        return null;
+        return uuid;
     }
 
     @Override
     public String productDetails() {
-        return "";
+        return "Food: " + category + ", Expires: " + expirationDate;
     }
 
     @Override
     public double weight() {
-        return 0;
+        return weight.doubleValue();
     }
 
     @Override
     public BigDecimal calculateShippingCost() {
-        return null;
+        return weight.multiply(BigDecimal.valueOf(50));
     }
 }
-
-/*
-Implements Perishable and Shippable.
-Fields: LocalDate expirationDate, BigDecimal weight (kg).
-Validations: negative price -> IllegalArgumentException("Price cannot be negative."); negative weight -> IllegalArgumentException("Weight cannot be negative.").
-productDetails() should look like: "Food: Milk, Expires: 2025-12-24".
-Shipping rule: cost = weight * 50.
- */

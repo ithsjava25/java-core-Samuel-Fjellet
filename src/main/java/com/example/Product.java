@@ -15,6 +15,9 @@ public abstract class Product implements Perishables {
         this.uuid = uuid;
         this.name = name;
         this.category = category;
+        if(price.compareTo(BigDecimal.ZERO) < 0)
+            throw new IllegalArgumentException("Price cannot be negative.");
+
         this.price = price;
     }
 
