@@ -1,31 +1,35 @@
 package com.example;
 
+import java.util.HashMap;
+
 public class Category {
-    static String name;
+    public String name;
+    static HashMap<String, Category> categories = new HashMap<String, Category>();
 
     private Category(String categoryName) {
-
-    }
-
-    public static Category of(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Category name cannot be null or empty");
-        }
-        name = name;
+        name = categoryName;
 
         name = name.substring(0, 1).toUpperCase()
                 + name.substring(1).toLowerCase();
 
-        return new Category(name);
+    }
+
+    public static Category of(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("Category name can't be null");
+        } else if (name.isBlank())
+            throw new IllegalArgumentException("Category name can't be blank");
+
+        if (categories.containsKey(name))
+                return categories.get(name);
+
+        categories.put(name, new Category(name));
+        return categories.get(name);
 
     }
 
     public String getName() {
         return name;
     }
-
 }
 
-/*
-Cache/flyweight: return the same instance for the same normalized name.
- */
