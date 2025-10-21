@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Category {
     public String name;
-    static HashMap<String, Category> categories = new HashMap<String, Category>();
+    static HashMap<String, Category> categories = new HashMap<>();
 
     private Category(String categoryName) {
         name = categoryName;
@@ -26,10 +26,6 @@ public class Category {
         categories.put(name, new Category(name));
         return categories.get(name);
 
-    }
-
-    public void clear(){
-        categories.clear();
     }
 
     public String getName() {

@@ -17,13 +17,6 @@ public class FoodProduct extends Product implements Perishable, Shippable {
 
     }
 
-
-
-    @Override
-    public UUID uuid() {
-        return uuid;
-    }
-
     @Override
     public LocalDate expirationDate() {
         return expirationDate;

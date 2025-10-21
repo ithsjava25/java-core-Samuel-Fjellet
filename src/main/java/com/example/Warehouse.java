@@ -4,10 +4,9 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class Warehouse {
-    List<Product> products = new ArrayList<>();
-    List<Shippable> shippables = new ArrayList<>();
-    List<Perishable> perishables = new ArrayList<>();
-    List<Perishable> expired = new ArrayList<>();
+    List<Product> products;
+    List<Shippable> shippables;
+    List<Perishable> perishables;
     static HashMap<String, Warehouse> warehouses = new HashMap<>();
 
     private Warehouse() {
@@ -65,9 +64,8 @@ public class Warehouse {
     public static synchronized Warehouse getInstance(String string) {
         if (!warehouses.containsKey(string)) {
             warehouses.put(string, new Warehouse());
-            return warehouses.get(string);
-        }else
-            return warehouses.get(string);
+        }
+        return warehouses.get(string);
     }
 
     public static synchronized Warehouse getInstance() {
