@@ -13,6 +13,7 @@ public class Warehouse {
         this.products = new ArrayList<>();
         this.shippables = new ArrayList<>();
         this.perishables = new ArrayList<>();
+
     }
 
     public List<Product> getProducts(){
@@ -38,10 +39,7 @@ public class Warehouse {
     }
 
     public void remove(UUID id){
-        for(Product product : products){
-            if (product.uuid == id)
-                products.remove(product);
-        }
+        products.removeIf(product -> product.uuid == id);
     }
 
     public Optional<Product> getProductById(UUID id){
@@ -70,11 +68,27 @@ public class Warehouse {
     }
 
 
-    public Map<Product, Category> getProductsGroupedByCategories() {
+    public Map<Category, List<Product>> getProductsGroupedByCategories() {
         if(products == null || products.isEmpty()){
             return Collections.emptyMap();
         }
-       return Collections.emptyMap();
+
+        HashMap<Category, List<Product>> result = new HashMap<>();
+
+        var tempMap = Category.categories.entrySet();
+
+        for(var category : tempMap){
+            List<Product> tempList = new ArrayList<>();
+
+            products.stream()
+                    .filter(element -> element.category.equals(category.getValue()))
+                    .forEach(tempList::add);
+
+            result.put(category.getValue(), tempList);
+        }
+
+        return result;
+
     }
 
     public void updateProductPrice(UUID id, BigDecimal newPrice){
