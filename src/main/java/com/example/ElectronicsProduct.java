@@ -5,13 +5,14 @@ import java.util.UUID;
 
 /*
 Implements Shippable.
-productDetails() should look like: "Electronics: Laptop, Warranty: 24 months".
 Shipping rule: base 79, add 49 if weight > 5.0 kg.
  */
 
-public class ElectronicsProduct extends Product {
+public class ElectronicsProduct extends Product implements Shippable {
     int warrantyMonths;
     BigDecimal weight;
+    BigDecimal basePrice = BigDecimal.valueOf(79);
+    BigDecimal addPrice = BigDecimal.valueOf(49);
 
 
     public ElectronicsProduct(UUID id, String name, Category category, BigDecimal price, int warranty, BigDecimal weight) {
@@ -29,12 +30,20 @@ public class ElectronicsProduct extends Product {
     }
 
     @Override
-    public BigDecimal getPrice() {
+    public UUID uuid() {
         return null;
     }
 
     @Override
-    public UUID uuid() {
-        return null;
+    public double weight() {
+        return weight.doubleValue();
+    }
+
+    @Override
+    public BigDecimal calculateShippingCost() {
+        if(weight.intValue() >= 5)
+            return basePrice.add(addPrice);
+        else
+            return basePrice;
     }
 }

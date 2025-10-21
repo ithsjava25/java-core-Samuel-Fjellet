@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class FoodProduct extends Product implements Perishables, Shippable {
+public class FoodProduct extends Product implements Perishable, Shippable {
     public LocalDate expirationDate;
     public BigDecimal weight;
 
@@ -18,14 +18,15 @@ public class FoodProduct extends Product implements Perishables, Shippable {
     }
 
 
-    @Override
-    public BigDecimal getPrice() {
-        return price;
-    }
 
     @Override
     public UUID uuid() {
         return uuid;
+    }
+
+    @Override
+    public LocalDate expirationDate() {
+        return expirationDate;
     }
 
     @Override

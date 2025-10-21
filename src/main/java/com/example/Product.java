@@ -5,7 +5,7 @@ import java.util.UUID;
 
 
 
-public abstract class Product implements Perishables {
+public abstract class Product {
     UUID uuid;
     String name;
     Category category;

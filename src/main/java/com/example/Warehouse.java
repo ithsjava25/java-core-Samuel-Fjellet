@@ -7,6 +7,7 @@ public class Warehouse {
     List<Product> products = new ArrayList<>();
     List<Shippable> shippables = new ArrayList<>();
     List<Perishable> perishables = new ArrayList<>();
+    List<Perishable> expired = new ArrayList<>();
     static HashMap<String, Warehouse> warehouses = new HashMap<>();
 
     private Warehouse() {
@@ -27,6 +28,7 @@ public class Warehouse {
     public void clearProducts(){
         products.clear();
         Category.categories.clear();
+        shippables.clear();
     }
 
     public boolean isEmpty(){
@@ -39,7 +41,10 @@ public class Warehouse {
         if (getProductById(product.uuid).isPresent())
             throw new IllegalArgumentException("Product with that id already exists, use updateProduct for updates.");
         products.add(product);
-
+        if(product instanceof Shippable)
+            shippables.add((Shippable) product);
+        if(product instanceof Perishable)
+            perishables.add((Perishable) product);
     }
 
     public void remove(UUID id){
@@ -107,7 +112,9 @@ public class Warehouse {
     }
 
     public List<Perishable> expiredProducts() {
-        return null;
+        return perishables.stream()
+                .filter(perishable -> perishable.isExpired(perishable))
+                .toList();
     }
 }
 
