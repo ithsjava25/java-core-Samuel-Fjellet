@@ -4,11 +4,16 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class Warehouse {
-    List<Product> products;
-    List<Shippable> shippables;
+    List<Product> products = new ArrayList<>();
+    List<Shippable> shippables = new ArrayList<>();
+    List<Perishable> perishables = new ArrayList<>();
+    static HashMap<String, Warehouse> warehouses = new HashMap<>();
 
-    private static Warehouse single_instance = null;
-    public String instanceName;
+    private Warehouse() {
+        this.products = new ArrayList<>();
+        this.shippables = new ArrayList<>();
+        this.perishables = new ArrayList<>();
+    }
 
     public List<Product> getProducts(){
         return products;
@@ -27,6 +32,8 @@ public class Warehouse {
     }
 
     public void addProduct(Product product){
+        if (product == null)
+            throw new IllegalArgumentException("Product cannot be null.");
         products.add(product);
     }
 
@@ -38,23 +45,28 @@ public class Warehouse {
     }
 
     public Optional<Product> getProductById(UUID id){
-       var temp = products.stream()
-               .filter(product -> product.uuid == id)
-               .findFirst()
-               .isEmpty();
+       if (products.isEmpty())
+           return Optional.empty();
 
-       if(temp){
-           return Optional.empty();
-       } else {
-           return Optional.empty();
-       }
+        return products.stream()
+                .filter(p -> p.uuid == id)
+                .findFirst();
+
+
     }
 
     public static synchronized Warehouse getInstance(String string) {
-        if (single_instance == null) {
-            single_instance = new Warehouse();
-        }
-        return single_instance;
+        if (!warehouses.containsKey(string)) {
+            warehouses.put(string, new Warehouse());
+            return warehouses.get(string);
+        }else
+            return warehouses.get(string);
+    }
+
+    public static synchronized Warehouse getInstance() {
+        if(!warehouses.containsKey("default"))
+            warehouses.put("default", new  Warehouse());
+        return warehouses.get("default");
     }
 
 
@@ -66,11 +78,15 @@ public class Warehouse {
     }
 
     public void updateProductPrice(UUID id, BigDecimal newPrice){
-        for(Product product : products){
-            if (product.uuid == id){
 
-            }
-        }
+        var product = getProductById(id);
+
+        if(product.isPresent())
+            product.get().setPrice(newPrice);
+        else
+            throw new NoSuchElementException("Product not found with id:" + id);
+
+
     }
 
     public List<Perishable> expiredProducts() {
