@@ -28,6 +28,10 @@ public class Category {
 
     }
 
+    public void clear(){
+        categories.clear();
+    }
+
     public String getName() {
         return name;
     }

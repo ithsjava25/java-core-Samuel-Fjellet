@@ -25,7 +25,7 @@ public class ElectronicsProduct extends Product {
 
     @Override
     public String productDetails() {
-        return "";
+        return "Electronics: " + name + ", Warranty: " + warrantyMonths + " months";
     }
 
     @Override

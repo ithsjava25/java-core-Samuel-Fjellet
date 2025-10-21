@@ -17,7 +17,7 @@ public class Warehouse {
     }
 
     public List<Product> getProducts(){
-        return products;
+        return Collections.unmodifiableList(products);
     }
 
     public List<Shippable> shippableProducts() {
@@ -26,6 +26,7 @@ public class Warehouse {
 
     public void clearProducts(){
         products.clear();
+        Category.categories.clear();
     }
 
     public boolean isEmpty(){
@@ -35,7 +36,10 @@ public class Warehouse {
     public void addProduct(Product product){
         if (product == null)
             throw new IllegalArgumentException("Product cannot be null.");
+        if (getProductById(product.uuid).isPresent())
+            throw new IllegalArgumentException("Product with that id already exists, use updateProduct for updates.");
         products.add(product);
+
     }
 
     public void remove(UUID id){
@@ -66,7 +70,6 @@ public class Warehouse {
             warehouses.put("default", new  Warehouse());
         return warehouses.get("default");
     }
-
 
     public Map<Category, List<Product>> getProductsGroupedByCategories() {
         if(products == null || products.isEmpty()){
