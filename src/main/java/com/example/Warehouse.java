@@ -1,6 +1,7 @@
 package com.example;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Warehouse {
@@ -8,6 +9,7 @@ public class Warehouse {
     List<Shippable> shippables;
     List<Perishable> perishables;
     static HashMap<String, Warehouse> warehouses = new HashMap<>();
+    HashMap<Optional<Product>, HashMap<LocalDateTime, BigDecimal>> changedProducts = new HashMap<>();
 
     private Warehouse() {
         this.products = new HashMap<>();
@@ -94,15 +96,20 @@ public class Warehouse {
     }
 
     public void updateProductPrice(UUID id, BigDecimal newPrice){
-
         var product = getProductById(id);
-
-        if(product.isPresent())
+        if(product.isPresent()) {
+            var tempMap = new HashMap<LocalDateTime, BigDecimal>();
+            tempMap.put(LocalDateTime.now(), product.get().price);
+            changedProducts.put(product, tempMap);
             product.get().setPrice(newPrice);
+        }
         else
             throw new NoSuchElementException("Product not found with id:" + id);
 
+    }
 
+    public Map<Optional<Product>, HashMap<LocalDateTime, BigDecimal>> getChangedProducts(){
+            return changedProducts;
     }
 
     public List<Perishable> expiredProducts() {
