@@ -24,14 +24,13 @@ public class ElectronicsProduct extends Product implements Shippable {
 
     }
 
-    @Override
-    public String productDetails() {
-        return "Electronics: " + name + ", Warranty: " + warrantyMonths + " months";
+    public int getWarrantyMonths() {
+        return warrantyMonths;
     }
 
     @Override
-    public UUID uuid() {
-        return null;
+    public String productDetails() {
+        return "Electronics: " + name + ", Warranty: " + warrantyMonths + " months";
     }
 
     @Override

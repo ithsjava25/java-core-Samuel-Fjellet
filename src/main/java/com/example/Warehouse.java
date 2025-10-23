@@ -4,20 +4,19 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class Warehouse {
-    List<Product> products;
+    HashMap<UUID, Product> products;
     List<Shippable> shippables;
     List<Perishable> perishables;
     static HashMap<String, Warehouse> warehouses = new HashMap<>();
 
     private Warehouse() {
-        this.products = new ArrayList<>();
+        this.products = new HashMap<>();
         this.shippables = new ArrayList<>();
         this.perishables = new ArrayList<>();
-
     }
 
     public List<Product> getProducts(){
-        return Collections.unmodifiableList(products);
+        return List.copyOf(products.values());
     }
 
     public List<Shippable> shippableProducts() {
@@ -28,6 +27,7 @@ public class Warehouse {
         products.clear();
         Category.categories.clear();
         shippables.clear();
+        perishables.clear();
     }
 
     public boolean isEmpty(){
@@ -39,7 +39,7 @@ public class Warehouse {
             throw new IllegalArgumentException("Product cannot be null.");
         if (getProductById(product.uuid).isPresent())
             throw new IllegalArgumentException("Product with that id already exists, use updateProduct for updates.");
-        products.add(product);
+        products.put(product.uuid, product);
         if(product instanceof Shippable)
             shippables.add((Shippable) product);
         if(product instanceof Perishable)
@@ -47,18 +47,13 @@ public class Warehouse {
     }
 
     public void remove(UUID id){
-        products.removeIf(product -> product.uuid == id);
+        products.remove(id);
     }
 
     public Optional<Product> getProductById(UUID id){
        if (products.isEmpty())
            return Optional.empty();
-
-        return products.stream()
-                .filter(p -> p.uuid == id)
-                .findFirst();
-
-
+        return (Optional.ofNullable(products.get(id)));
     }
 
     public static synchronized Warehouse getInstance(String string) {
@@ -82,11 +77,12 @@ public class Warehouse {
         HashMap<Category, List<Product>> result = new HashMap<>();
 
         var tempMap = Category.categories.entrySet();
+        var productsList = new ArrayList<>(products.values());
 
         for(var category : tempMap){
             List<Product> tempList = new ArrayList<>();
 
-            products.stream()
+            productsList.stream()
                     .filter(element -> element.category.equals(category.getValue()))
                     .forEach(tempList::add);
 

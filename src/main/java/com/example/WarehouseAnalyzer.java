@@ -146,7 +146,6 @@ class WarehouseAnalyzer {
      * @return list of products considered outliers
      */
 
-    //Denna är fel ***********************
 
     public List<Product> findPriceOutliers(double standardDeviations) {
         List<Product> products = warehouse.getProducts();
