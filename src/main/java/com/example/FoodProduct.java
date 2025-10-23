@@ -14,7 +14,6 @@ public class FoodProduct extends Product implements Perishable, Shippable {
         if (weight.compareTo(BigDecimal.ZERO) < 0)
             throw new IllegalArgumentException("Weight cannot be negative.");
         this.weight = weight;
-
     }
 
     @Override

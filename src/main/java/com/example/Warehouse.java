@@ -5,16 +5,17 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Warehouse {
+    static HashMap<String, Warehouse> warehouses = new HashMap<>();
     HashMap<UUID, Product> products;
     List<Shippable> shippables;
     List<Perishable> perishables;
-    static HashMap<String, Warehouse> warehouses = new HashMap<>();
-    HashMap<Optional<Product>, HashMap<LocalDateTime, BigDecimal>> changedProducts = new HashMap<>();
+    HashMap<Optional<Product>, HashMap<LocalDateTime, BigDecimal>> changedProducts;
 
     private Warehouse() {
         this.products = new HashMap<>();
         this.shippables = new ArrayList<>();
         this.perishables = new ArrayList<>();
+        this.changedProducts = new HashMap<>();
     }
 
     public List<Product> getProducts(){
@@ -75,24 +76,17 @@ public class Warehouse {
         if(products == null || products.isEmpty()){
             return Collections.emptyMap();
         }
-
         HashMap<Category, List<Product>> result = new HashMap<>();
-
         var tempMap = Category.categories.entrySet();
         var productsList = new ArrayList<>(products.values());
-
         for(var category : tempMap){
             List<Product> tempList = new ArrayList<>();
-
             productsList.stream()
                     .filter(element -> element.category.equals(category.getValue()))
                     .forEach(tempList::add);
-
             result.put(category.getValue(), tempList);
         }
-
         return result;
-
     }
 
     public void updateProductPrice(UUID id, BigDecimal newPrice){
@@ -105,7 +99,6 @@ public class Warehouse {
         }
         else
             throw new NoSuchElementException("Product not found with id:" + id);
-
     }
 
     public Map<Optional<Product>, HashMap<LocalDateTime, BigDecimal>> getChangedProducts(){
@@ -119,13 +112,3 @@ public class Warehouse {
     }
 }
 
-/*
-getInstance(String name) returns the same instance per unique name.
-addProduct(Product): throw IllegalArgumentException("Product cannot be null.") if null.
-getProducts(): return an unmodifiable copy.
-getProductById(UUID): return Optional.
-updateProductPrice(UUID, BigDecimal): when not found, throw NoSuchElementException("Product not found with id: "). Also track changed products in getChangedProducts().
-expiredProducts(): return List that are expired.
-shippableProducts(): return List from stored products.
-remove(UUID): remove the matching product if present.
- */

@@ -3,8 +3,6 @@ package com.example;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-
-
 public abstract class Product {
     UUID uuid;
     String name;
@@ -17,10 +15,8 @@ public abstract class Product {
         this.category = category;
         if(price.compareTo(BigDecimal.ZERO) < 0)
             throw new IllegalArgumentException("Price cannot be negative.");
-
         this.price = price;
     }
-
 
     public BigDecimal price() {
         return price;
@@ -43,5 +39,4 @@ public abstract class Product {
     }
 
     public abstract String productDetails();
-
 }

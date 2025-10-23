@@ -3,17 +3,11 @@ package com.example;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-/*
-Implements Shippable.
-Shipping rule: base 79, add 49 if weight > 5.0 kg.
- */
-
 public class ElectronicsProduct extends Product implements Shippable {
     int warrantyMonths;
     BigDecimal weight;
     BigDecimal basePrice = BigDecimal.valueOf(79);
     BigDecimal addPrice = BigDecimal.valueOf(49);
-
 
     public ElectronicsProduct(UUID id, String name, Category category, BigDecimal price, int warranty, BigDecimal weight) {
         super(id, name, category, price);
@@ -21,7 +15,6 @@ public class ElectronicsProduct extends Product implements Shippable {
         if (warrantyMonths < 0)
             throw new IllegalArgumentException("Warranty months cannot be negative.");
         this.weight = weight;
-
     }
 
     public int getWarrantyMonths() {
