@@ -114,7 +114,7 @@ public class Warehouse {
 
     public List<Perishable> expiredProducts() {
         return perishables.stream()
-                .filter(perishable -> perishable.isExpired(perishable))
+                .filter(Perishable::isExpired)
                 .toList();
     }
 }
